@@ -6,23 +6,27 @@
 #define EX3_CPP_A_MATRIX_HPP
 #include <iostream>
 #include <vector>
+#include <exception>
 namespace zich {
     class Matrix {
     private:
         std::vector<std::vector<double>> mat;
-        int length;
-        int width;
+        int rowsNum;
+        int colNum;
     public:
         Matrix(std::vector<double> vector, int rowNum, int colNum);
+
+        //getters
         std::vector<double> getMatrixAsVector();
+        int getRowsNum() const{return this->rowsNum;}
+        int getColsNum() const{return this->colNum;}
+        std::vector<std::vector<double>>& getMat(){return this->mat;}
         //addition operators
         Matrix &operator+=(double x);
 
         Matrix &operator+=(Matrix &second);
 
         friend Matrix operator+(Matrix mat, double x);
-
-        friend Matrix operator+(double x, Matrix mat);
 
         friend Matrix operator+(Matrix first, Matrix &second);
 
@@ -50,17 +54,17 @@ namespace zich {
         Matrix operator--(int);
 
         //boolean operators
-        bool operator<(Matrix &other);
+        friend bool operator<(Matrix& first, Matrix &other);
 
-        bool operator>(Matrix &other);
+        friend bool operator>(Matrix& first, Matrix &other);
 
-        bool operator<=(Matrix &other);
+        friend bool operator<=(Matrix& first, Matrix &other);
 
-        bool operator>=(Matrix &other);
+        friend bool operator>=(Matrix& first, Matrix &other);
 
-        bool operator==(Matrix &other);
+        friend bool operator==(Matrix& first, Matrix &other);
 
-        bool operator!=(Matrix &other);
+        friend bool operator!=(Matrix& first, Matrix &other);
 
         //multiplication operators
         Matrix &operator*=(double x);
