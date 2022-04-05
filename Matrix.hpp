@@ -28,13 +28,15 @@ namespace zich {
 
         friend Matrix operator+(Matrix mat, double x);
 
-        friend Matrix operator+(Matrix first, Matrix &second);
+        friend Matrix operator+(const Matrix& first, Matrix &second);
 
         Matrix &operator+();
 
         Matrix &operator++();
 
         Matrix operator++(int);
+
+        Matrix& operator=(Matrix first);
 
         //subtraction operators
         Matrix &operator-=(double x);

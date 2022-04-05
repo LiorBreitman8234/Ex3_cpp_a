@@ -94,14 +94,132 @@ namespace zich{
         {
             for(int j =0; j < this->colNum;j++)
             {
-                this->mat.at(i).at(j) = second.getMat().at(i).at(j);
+                this->mat.at(i).at(j) += second.getMat().at(i).at(j);
             }
         }
         return *this;
     }
-    Matrix operator+(Matrix first, Matrix& second){
-        Matrix copy = std::move(first);
+    Matrix operator+(const Matrix& first, Matrix& second){
+        Matrix copy = first;
         copy += second;
         return copy;
     }
+
+    Matrix& Matrix::operator+() {
+        return *this;
+    }
+
+    Matrix &Matrix::operator++() {
+        *this+=1;
+        return *this;
+    }
+
+    Matrix Matrix::operator++(int) {
+        Matrix& old = *this;
+        operator++();
+        return old;
+    }
+
+    Matrix& Matrix::operator=(Matrix first) {
+        if (this == &first) {
+            return *this;
+        }
+        this->mat = std::vector<std::vector<double>>();
+        this->rowsNum = first.getRowsNum();
+        this->colNum = first.getColsNum();
+        for (int i = 0; i < this->rowsNum; i++) {
+            mat.emplace_back(std::vector<double>());
+            for (int j = 0; j < this->colNum; j++) {
+                this->mat.at(i).push_back(first.getMat().at(i).at(j));
+                {
+                }
+            }
+        }
+        return *this;
+    }
+
+    Matrix &Matrix::operator-=(double x) {
+        for(int i =0; i < this->rowsNum;i++)
+        {
+            for(int j =0; j < this->colNum;j++)
+            {
+                this->mat.at(i).at(j) -= x;
+            }
+        }
+        return *this;
+    }
+
+    Matrix &Matrix::operator-=(Matrix &second) {
+        if(this->rowsNum != second.getRowsNum() || this->colNum != second.getColsNum()){
+            throw std::invalid_argument("matrices need to be in same size");
+        }
+        for(int i =0; i > this->rowsNum;i++)
+        {
+            for(int j =0; j < this->colNum;j++)
+            {
+                this->mat.at(i).at(j) -= second.getMat().at(i).at(j);
+            }
+        }
+        return *this;
+    }
+
+    Matrix operator-(double x, Matrix mat) {
+        return (mat-=x);
+    }
+    Matrix operator-(Matrix mat, double x) {
+        return (mat-=x);
+    }
+
+    Matrix operator-(Matrix first, Matrix &second) {
+        return (first-=second);
+    }
+
+    Matrix &Matrix::operator-() {
+        return (*this)*=-1;
+    }
+
+    Matrix &Matrix::operator*=(double x) {
+        for(int i =0 ; i < this->rowsNum;i++)
+        {
+            for(int j =0; j < this->colNum;j++)
+            {
+                this->mat.at(i).at(j)*=x;
+            }
+        }
+        return *this;
+    }
+
+    Matrix operator*(Matrix mat, double x) {
+        return mat*=x;
+    }
+
+    Matrix operator*(double x, Matrix mat) {
+        return mat*=x;
+    }
+
+    Matrix &Matrix::operator*=(Matrix &other) {
+        if(this->colNum!= other.rowsNum)
+        {
+            throw std::invalid_argument("first matrix columns need to be the same as second matrix rows");
+        }
+        std::vector<std::vector<double>> newMat;
+
+    }
+
+    Matrix operator*(Matrix first, Matrix &second) {
+        return first*=second;
+    }
+
+    Matrix &Matrix::operator--() {
+        *this-=1;
+        return *this;
+    }
+
+    Matrix Matrix::operator--(int) {
+        Matrix copy = *this;
+        operator--();
+        return copy;
+    }
+
+
 };
