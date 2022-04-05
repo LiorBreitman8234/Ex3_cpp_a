@@ -20,7 +20,7 @@ TEST_CASE("matrix initialization and simple operators"){
     CHECK(sub.getMatrixAsVector() == checkOn);
     sub--;
     CHECK(sub.getMatrixAsVector() == vet);
-    zich::Matrix addN = 1+sub;
+    zich::Matrix addN = sub+1;
     CHECK(addN.getMatrixAsVector() == checkOn);
     sub -= 1;
     zich::Matrix mul = sub*2;

@@ -7,28 +7,31 @@
 #include <iostream>
 #include <vector>
 #include <exception>
+#include <algorithm>
 namespace zich {
     class Matrix {
     private:
         std::vector<std::vector<double>> mat;
-        int rowsNum;
-        int colNum;
+        size_t rowsNum;
+        size_t colNum;
     public:
-        Matrix(std::vector<double> vector, int rowNum, int colNum);
-
+        Matrix(std::vector<double> vector, size_t rowNum, size_t colNum);
+        Matrix(Matrix& other);
+        Matrix(const Matrix& other);
+        ~Matrix();
         //getters
         std::vector<double> getMatrixAsVector();
-        int getRowsNum() const{return this->rowsNum;}
-        int getColsNum() const{return this->colNum;}
-        std::vector<std::vector<double>>& getMat(){return this->mat;}
+        size_t getRowsNum() const{return this->rowsNum;}
+        size_t getColsNum() const{return this->colNum;}
+        std::vector<std::vector<double>>& getMat() {return this->mat;}
         //addition operators
         Matrix &operator+=(double x);
 
         Matrix &operator+=(Matrix &second);
 
-        friend Matrix operator+(Matrix mat, double x);
-
-        friend Matrix operator+(const Matrix& first, Matrix &second);
+        friend Matrix operator+(Matrix& mat, double x);
+        friend Matrix operator+(const Matrix& mat, double x);
+        friend Matrix operator+(Matrix& first, Matrix &second);
 
         Matrix &operator+();
 
@@ -71,7 +74,8 @@ namespace zich {
         //multiplication operators
         Matrix &operator*=(double x);
 
-        friend Matrix operator*(Matrix mat, double x);
+        friend Matrix operator*(Matrix& mat, double x);
+        friend Matrix operator*(const Matrix& mat, double x);
 
         friend Matrix operator*(double x, Matrix mat);
 
@@ -82,7 +86,10 @@ namespace zich {
         //input,output operators
         friend std::ostream &operator<<(std::ostream &os, const Matrix &mat);
 
-        friend std::istream &operator>>(std::istream &os, std::string mat);
+        friend std::istream &operator>>(std::istream &is,Matrix& mat);
+
+        //helper
+        double getCombinationValue(size_t row, size_t column, Matrix& other);
     };
 
 
